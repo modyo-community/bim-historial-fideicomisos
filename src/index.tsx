@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { LiquidContextProvider, ModalContextProvider } from '@dynamic-framework/ui-react';
 
-import '@dynamic-framework/ui-react/dist/css/dynamic-ui-all.css';
+import '@dynamic-framework/ui-react/dist/css/dynamic-ui-react.css';
 
 import ModalCancelFid from './components/ModalCancelFid';
 
