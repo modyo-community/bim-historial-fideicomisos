@@ -20,7 +20,7 @@ root.render(
       <ModalContextProvider
         portalName="modalPortal"
         availableModals={{
-          modal: ModalCancelFid,
+          modal: ModalCancelFid
         }}
       >
         <App />

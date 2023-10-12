@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { DInputSelect, DButton } from '@dynamic-framework/ui-react';
+import { DInputSelect, DButton, useModalContext } from '@dynamic-framework/ui-react';
 import { useTranslation } from 'react-i18next';
 
 import NoData from './NoData';
 import Table from './Table';
+import Filters from './Filters';
 
 export default function Findeicomiso() {
   const { t } = useTranslation();
+
+  const { openModal } = useModalContext();
 
   const fideicomisos = [
     {id: '3214394132', name: 'KYO - COSTELLA', alias: 'Fideicomiso 1', instruction: 'Cambio', status: 'Open'},
@@ -24,23 +27,10 @@ export default function Findeicomiso() {
     {id: '3214394136', name: 'Modyo', alias: 'FiIdeicomiso 2', instruction: 'Retiro', status: 'Open'},
   ];
 
-  const uniqueIds = [...new Set(fideicomisos.map(item => item.id))];
-  const optionsIds = [
-    { label: '', value: '' },
-    ...uniqueIds.map(id => ({ label: id, value: id })),
-  ];
-  
-  const uniqueNames = [...new Set(fideicomisos.map(item => item.name))];
-  const optionsNames = [
-    { label: '', value: '' },
-    ...uniqueNames.map(name => ({ label: name, value: name })),
-  ];
+  const [filtro, setFiltro] = useState({ id: '', name: '', instruction: '', status: '' });
+  const [listadoFiltrado, setListadoFiltrado] = useState(fideicomisos);
 
-  let [filtro, setFiltro] = useState({ id: '', name: '', instruction: '', status :''});
-  let [listadoFiltrado, setListadoFiltrado] = useState(fideicomisos);
-
-  const handleFiltrarClick = () => {
-    // Filtrar el listado principal basado en el filtro actual
+  const handleFiltrar = (filtro: any) => {
     const filtroId = filtro.id.toLowerCase();
     const filtroName = filtro.name.toLowerCase();
     const filtroInstruction = filtro.instruction.toLowerCase();
@@ -48,11 +38,17 @@ export default function Findeicomiso() {
     const listadoFiltrado = fideicomisos.filter(
       (elemento) =>
         elemento.id.toLowerCase().includes(filtroId) &&
-        elemento.name.toLowerCase().includes(filtroName) &&
+        elemento.name.toLowerCase().includes(filtroName)  &&
         elemento.instruction.toLowerCase().includes(filtroInstruction) &&
         elemento.status.toLowerCase().includes(filtroStatus)
     );
     setListadoFiltrado(listadoFiltrado);
+  };
+
+  const [showFilters, setShowFilters] = useState(false);
+  
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
   };
 
   return (
@@ -60,72 +56,9 @@ export default function Findeicomiso() {
       <div className="row mb-8">
         <div className="col-12 col-md-4 mb-3 mb-md-0">
           <div className="p-4 bg-white w-100 rounded-2 shadow-sm">
-            <p className="fs-5 mb-3 pb-3 border-bottom text-primary">Buscar solicitud</p>
-            <div className="mb-4">
-            <DInputSelect
-                innerId="selectId"
-                label="Nombre del fideicomiso"
-                onEventChange={(e) => setFiltro({ ...filtro, name: e.detail.value })}
-                options={optionsNames}
-              />
-            </div>
-            <div className="mb-4">
-              <DInputSelect
-                innerId="selectName"
-                label="Numero del fideicomiso"
-                onEventChange={(e) => setFiltro({ ...filtro, id: e.detail.value })}
-                options={optionsIds}
-              />
-            </div>
-            <div className="mb-4">
-              <DInputSelect
-                innerId="selectInstruction"
-                label="Instrucción"
-                onEventChange={(e) => setFiltro({ ...filtro, instruction: e.detail.value })}
-                options={[
-                  {
-                    label: '',
-                    value: ''
-                  },
-                  {
-                    label: 'Cambio',
-                    value: 'Cambio'
-                  },
-                  {
-                    label: 'Retiro',
-                    value: 'Retiro'
-                  }
-                ]}
-              />
-            </div>
-            <div className="mb-4">
-              <DInputSelect
-                innerId="selectStatus"
-                label="Estatus"
-                onEventChange={(e) => setFiltro({ ...filtro, status: e.detail.value })}
-                options={[
-                  {
-                    label: '',
-                    value: ''
-                  },
-                  {
-                    label: 'Open',
-                    value: 'Open'
-                  },
-                  {
-                    label: 'Closed',
-                    value: 'Closed'
-                  }
-                ]}
-              />
-            </div>
-            <div className="d-flex">
-              <DButton
-                onEventClick={() => handleFiltrarClick()}
-                text="Buscar"
-                theme="primary"
-                type="button"
-              />
+           <button className="w-100 d-block d-md-none btn-block btn btn-outline-primary" onClick={toggleFilters}>{showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}</button>
+            <div className={`filters d-md-block mt-3 ${showFilters ? 'd-md-block' : 'd-none'}`}>
+              <Filters onFiltrar={handleFiltrar} fideicomisos={fideicomisos} />
             </div>
           </div>
         </div>
