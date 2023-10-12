@@ -31,6 +31,7 @@ export default function Findeicomiso() {
   const [listadoFiltrado, setListadoFiltrado] = useState(fideicomisos);
 
   const handleFiltrar = (filtro: any) => {
+    setShowFilters(!showFilters);
     const filtroId = filtro.id.toLowerCase();
     const filtroName = filtro.name.toLowerCase();
     const filtroInstruction = filtro.instruction.toLowerCase();
