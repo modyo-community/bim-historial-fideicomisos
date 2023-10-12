@@ -21,6 +21,7 @@ export default function Findeicomiso() {
     {id: '3214394132', name: 'BIM', alias: 'Fideicomiso 2', instruction: 'Retiro', status: 'Open'},
     {id: '45634413', name: 'Modyo', alias: 'Fideicomiso 1', instruction: 'Cambio', status: 'Open'},
     {id: '909876543', name: 'BIM', alias: 'FiIdeicomiso 2', instruction: 'Retiro', status: 'Open'},
+    {id: '3214394132', name: 'Modyo', alias: 'FiIdeicomiso 2', instruction: 'Retiro', status: 'Open'},
   ];
 
   const uniqueIds = [...new Set(fideicomisos.map(item => item.id))];
