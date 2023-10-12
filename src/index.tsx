@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { LiquidContextProvider } from '@dynamic-framework/ui-react';
+import { LiquidContextProvider, ModalContextProvider } from '@dynamic-framework/ui-react';
 
-import '@dynamic-framework/ui-react/dist/css/dynamic-ui-react.css';
+import '@dynamic-framework/ui-react/dist/css/dynamic-ui-all.css';
+
+import ModalCancelFid from './components/ModalCancelFid';
 
 import './styles/base.scss';
 import './config/liquidConfig';
@@ -15,7 +17,14 @@ const root = ReactDOM.createRoot(document.getElementById('historial') as Element
 root.render(
   <React.StrictMode>
     <LiquidContextProvider>
-      <App />
+      <ModalContextProvider
+        portalName="modalPortal"
+        availableModals={{
+          modal: ModalCancelFid,
+        }}
+      >
+        <App />
+    </ModalContextProvider>
     </LiquidContextProvider>
   </React.StrictMode>,
 );
